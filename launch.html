@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerIntell — Project Access & Live Launcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent-blue: #3b82f6;
+      --accent-indigo: #6366f1;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 60%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.6rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Primary Hero Action */
+    .hero-box {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(99, 102, 241, 0.08) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 20px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-info h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-info p {
+      color: #cbd5e1;
+      font-size: 0.88rem;
+    }
+
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: white;
+      text-decoration: none;
+      padding: 0.9rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.6);
+      background: linear-gradient(135deg, #1d4ed8, #4338ca);
+    }
+
+    /* Live Server Status Strip */
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .status-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+    }
+
+    .status-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-host {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .status-online {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-offline {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Quick Links Grid */
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #e2e8f0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .ib-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .ib-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .ib-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .ib-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .ib-indigo { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tag-new { background: #f59e0b; color: #000; }
+    .tag-api { background: #3b82f6; color: #fff; }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 0.2rem;
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .path-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: #64748b;
+    }
+
+    .open-arrow {
+      font-size: 0.85rem;
+      color: #60a5fa;
+      font-weight: 700;
+    }
+
+    /* Credentials Card */
+    .credentials-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .cred-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .cred-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .cred-role {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #a5b4fc;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+
+    .cred-detail {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #94a3b8;
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    /* Embedded Live Webview Toggle */
+    .preview-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .preview-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-iframe {
+      width: 100%;
+      height: 650px;
+      border: none;
+      background: #fff;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        CareerIntell Live Deployment Portal
+      </div>
+      <h1>Direct Application Access Hub</h1>
+      <p class="subtitle">
+        Click any link below to immediately open, inspect, and test your web application, interview preparation hub, and AI placement engines.
+      </p>
+    </header>
+
+    <!-- Main Live CTA -->
+    <div class="hero-box">
+      <div class="hero-info">
+        <h2>⚡ Open Running Application</h2>
+        <p>Your Vite frontend and FastAPI backend are live and listening on your local machine.</p>
+      </div>
+      <a href="http://10.206.199.94:5173" target="_blank" class="primary-btn">
+        Open Website (http://10.206.199.94:5173) ➔
+      </a>
+    </div>
+
+    <!-- Live Status Strip -->
+    <div class="status-strip">
+      <div class="status-card">
+        <div>
+          <div class="status-label">Frontend Web App</div>
+          <div class="status-host">http://10.206.199.94:5173</div>
+        </div>
+        <span class="status-pill status-online" id="frontendStatus">● Online</span>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-label">Backend FastAPI & NLP</div>
+          <div class="status-host">http://10.206.199.94:8000</div>
+        </div>
+        <span class="status-pill status-online" id="backendStatus">● Online</span>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <div class="status-label">Swagger API Docs</div>
+          <div class="status-host">http://10.206.199.94:8000/docs</div>
+        </div>
+        <a href="http://10.206.199.94:8000/docs" target="_blank" class="status-pill status-online" style="text-decoration:none;">
+          View API Docs ➔
+        </a>
+      </div>
+    </div>
+
+    <!-- Deep-Link Feature Grid -->
+    <h3 class="section-title">🚀 Direct Access to Key Pages</h3>
+    <div class="grid">
+      <!-- Interview Prep Hub -->
+      <a href="http://10.206.199.94:5173/interview-prep" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-amber">💼</div>
+          <div>
+            <div class="card-title">
+              Interview Prep Hub
+              <span class="card-tag tag-new">NEW</span>
+            </div>
+            <p class="card-desc">Targeted technical questions, system design scenarios, and resume project defense by role.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/interview-prep</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Dashboard -->
+      <a href="http://10.206.199.94:5173/dashboard" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-blue">📊</div>
+          <div>
+            <div class="card-title">Student Dashboard</div>
+            <p class="card-desc">Live readiness score breakdown, market role matches, and high-priority skill gap summary.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/dashboard</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Assessments -->
+      <a href="http://10.206.199.94:5173/assessments" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-emerald">🎯</div>
+          <div>
+            <div class="card-title">Skill Assessments</div>
+            <p class="card-desc">Timed MCQ quizzes in Python, ML, and SQL with automated server-side grading and badges.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/assessments</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Roadmap -->
+      <a href="http://10.206.199.94:5173/roadmap" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-purple">🗺️</div>
+          <div>
+            <div class="card-title">Personalized Roadmap</div>
+            <p class="card-desc">Interactive 4-phase trajectory tailored to fill missing skills with direct curated links.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/roadmap</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Intelligence -->
+      <a href="http://10.206.199.94:5173/intelligence" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-indigo">🧠</div>
+          <div>
+            <div class="card-title">Career Intelligence</div>
+            <p class="card-desc">Full skill gap matrix, radar visualization, role compatibility, and recommendations.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/intelligence</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Resume & JD Parser -->
+      <a href="http://10.206.199.94:5173/analyze" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-blue">📄</div>
+          <div>
+            <div class="card-title">Resume & Job Analysis</div>
+            <p class="card-desc">Drag-and-drop PDF resume text parsing and comparison against target job descriptions.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/analyze</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- TPO Portal -->
+      <a href="http://10.206.199.94:5173/tpo" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-emerald">🏛️</div>
+          <div>
+            <div class="card-title">TPO Placement Portal</div>
+            <p class="card-desc">Campus cohort placement analytics, student roster, and department-level readiness metrics.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/tpo</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Public Landing Page -->
+      <a href="http://10.206.199.94:5173/" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-purple">🌐</div>
+          <div>
+            <div class="card-title">Public Landing Page</div>
+            <p class="card-desc">Main marketing and feature showcase page with login and register call-to-actions.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">/</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+
+      <!-- Swagger Docs -->
+      <a href="http://10.206.199.94:8000/docs" target="_blank" class="card">
+        <div class="card-top">
+          <div class="icon-box ib-amber">⚡</div>
+          <div>
+            <div class="card-title">
+              Interactive API Docs
+              <span class="card-tag tag-api">SWAGGER</span>
+            </div>
+            <p class="card-desc">Test FastAPI endpoints for interviews, resume parsing, readiness, and assessments directly.</p>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <span class="path-text">http://10.206.199.94:8000/docs</span>
+          <span class="open-arrow">Open ➔</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Test Accounts Section -->
+    <div class="credentials-box">
+      <h3 style="font-size: 1rem; color: #fff; margin-bottom: 0.3rem;">🔑 Pre-Seeded Test Credentials</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">Use these accounts to test different roles and personas on the website:</p>
+      
+      <div class="cred-grid">
+        <div class="cred-card">
+          <div class="cred-role">👨‍🎓 Student (Alex Chen)</div>
+          <div class="cred-detail">
+            <span>student@careerintell.com</span>
+            <button class="copy-btn" onclick="copyText('student@careerintell.com')">Copy</button>
+          </div>
+          <div class="cred-detail">
+            <span>student123</span>
+            <button class="copy-btn" onclick="copyText('student123')">Copy</button>
+          </div>
+        </div>
+
+        <div class="cred-card">
+          <div class="cred-role">🏛️ Placement Officer (Dr. Sharma)</div>
+          <div class="cred-detail">
+            <span>tpo@careerintell.com</span>
+            <button class="copy-btn" onclick="copyText('tpo@careerintell.com')">Copy</button>
+          </div>
+          <div class="cred-detail">
+            <span>tpo123</span>
+            <button class="copy-btn" onclick="copyText('tpo123')">Copy</button>
+          </div>
+        </div>
+
+        <div class="cred-card">
+          <div class="cred-role">🛡️ Administrator</div>
+          <div class="cred-detail">
+            <span>admin@careerintell.com</span>
+            <button class="copy-btn" onclick="copyText('admin@careerintell.com')">Copy</button>
+          </div>
+          <div class="cred-detail">
+            <span>admin123</span>
+            <button class="copy-btn" onclick="copyText('admin123')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live In-Page Interactive Preview -->
+    <div class="preview-section">
+      <div class="preview-header">
+        <span style="font-size: 0.9rem; font-weight: 700; color: #fff;">🖥️ Live In-Page Web Preview</span>
+        <div style="display:flex; gap:0.6rem;">
+          <button onclick="reloadPreview()" class="copy-btn">🔄 Reload Preview</button>
+          <a href="http://10.206.199.94:5173" target="_blank" class="copy-btn" style="text-decoration:none;">Open in Full Window ↗</a>
+        </div>
+      </div>
+      <iframe src="http://10.206.199.94:5173" id="liveFrame" class="preview-iframe"></iframe>
+    </div>
+
+    <footer>
+      CareerIntell — AI-Powered Placement Readiness & Interview Preparation System • Local Dev Server
+    </footer>
+  </div>
+
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert('Copied: ' + text);
+    }
+
+    function reloadPreview() {
+      const frame = document.getElementById('liveFrame');
+      frame.src = frame.src;
+    }
+
+    // Dynamic Server Health Check
+    async function checkHealth() {
+      try {
+        const fRes = await fetch('http://10.206.199.94:5173', { mode: 'no-cors' });
+        document.getElementById('frontendStatus').className = 'status-pill status-online';
+        document.getElementById('frontendStatus').innerText = '● Online';
+      } catch (e) {
+        document.getElementById('frontendStatus').className = 'status-pill status-offline';
+        document.getElementById('frontendStatus').innerText = '○ Offline';
+      }
+
+      try {
+        const bRes = await fetch('http://10.206.199.94:8000/docs', { mode: 'no-cors' });
+        document.getElementById('backendStatus').className = 'status-pill status-online';
+        document.getElementById('backendStatus').innerText = '● Online';
+      } catch (e) {
+        document.getElementById('backendStatus').className = 'status-pill status-offline';
+        document.getElementById('backendStatus').innerText = '○ Offline';
+      }
+    }
+
+    checkHealth();
+    setInterval(checkHealth, 5000);
+  </script>
+</body>
+</html>

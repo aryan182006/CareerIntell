@@ -1,0 +1,39 @@
+# Node & Vite
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
+!.env.example
+tsconfig.app.tsbuildinfo
+tsconfig.node.tsbuildinfo
+
+# Python & FastAPI
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.env
+
+# Testing & Caches
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Uploads & Database
+backend/careerintell.db
+backend/careerintell.db-journal
+backend/uploads/resumes/*
+!backend/uploads/resumes/.gitkeep
+
+# IDEs & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
